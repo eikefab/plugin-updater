@@ -26,7 +26,6 @@ public class ReleaseDownloadTest {
         downloader.download(folder);
 
         final File file = Objects.requireNonNull(folder.listFiles())[0];
-
         Assertions.assertEquals(file.getName(), "folder-reader-1.1.jar");
     }
 

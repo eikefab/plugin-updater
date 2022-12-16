@@ -1,0 +1,5 @@
+name: PluginUpdater
+version: 1.0.0
+main: com.github.eikefab.libs.pluginupdater.PluginUpdater
+author: eikefab
+description: "A plugin that can update others whose implemented the PluginUpdaterAPI"

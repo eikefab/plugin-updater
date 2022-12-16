@@ -1,3 +1,4 @@
 rootProject.name = 'plugin-updater'
 include 'api'
+include 'bukkit'
 

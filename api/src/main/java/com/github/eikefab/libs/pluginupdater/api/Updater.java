@@ -108,4 +108,14 @@ public final class Updater {
         }
     }
 
+    public boolean isUpdateAvailable(String currentVersion) {
+        try {
+            final int version = Integer.parseInt(currentVersion.replace(".", ""));
+
+            return isUpdateAvailable(version);
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("Current 'tag_name' isn't supported!");
+        }
+    }
+
 }

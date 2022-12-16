@@ -6,7 +6,6 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReleaseDeserializer implements JsonDeserializer<Release> {
@@ -19,6 +18,7 @@ public class ReleaseDeserializer implements JsonDeserializer<Release> {
         final String body = object.get("body").getAsString();
         final String version = object.get("tag_name").getAsString();
         final boolean preRelease = object.get("prerelease").getAsBoolean();
+        final String url = object.get("html_url").getAsString();
         final LinkedList<Asset> assets =
                 object.get("assets").getAsJsonArray()
                 .asList()
@@ -26,7 +26,7 @@ public class ReleaseDeserializer implements JsonDeserializer<Release> {
                 .map(element -> context.<Asset>deserialize(element, Asset.class))
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        return new Release(id, body, version, preRelease, assets);
+        return new Release(id, body, version, preRelease, url, assets);
     }
 
 }
