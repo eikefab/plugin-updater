@@ -32,6 +32,11 @@ public final class Updater {
         return repository;
     }
 
+    /**
+     * Retrieves the repository release, returns an empty LinkedList if it was not successful
+     *
+     * @return all releases found on GitHub, the latest one will always be the 1st on the list
+     */
     public LinkedList<Release> getReleases() {
         final LinkedList<Release> releases = new LinkedList<>();
         final Request request = new Request.Builder()
@@ -56,6 +61,12 @@ public final class Updater {
         return releases;
     }
 
+    /**
+     * Compares the current version to the latest release version
+     *
+     * @param currentVersion the version to compare
+     * @return true if the latest release is newer than the current one
+     */
     public boolean isUpdateAvailable(int currentVersion) {
         final List<Release> releases = getReleases();
 
