@@ -52,7 +52,7 @@ public final class Updater {
     }
 
     /**
-     * Retrieves the repository and update the list of releases, returns an empty LinkedList if it was not successful
+     * Retrieves the repository and update the list of releases
      *
      * @return all releases found on GitHub, the latest one will always be the 1st on the list
      */
@@ -87,7 +87,7 @@ public final class Updater {
     }
 
     /**
-     * Compares the current version to the latest release version
+     * Compares the provided version to the latest release version
      *
      * @param currentVersion the version to compare
      * @return true if the latest release is newer than the current one
