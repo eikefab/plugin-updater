@@ -1,5 +1,6 @@
 package com.github.eikefab.libs.pluginupdater.api;
 
+import com.github.eikefab.libs.pluginupdater.api.deserializer.AssetDeserializer;
 import com.github.eikefab.libs.pluginupdater.api.deserializer.ReleaseDeserializer;
 import com.google.gson.*;
 import okhttp3.OkHttpClient;
@@ -21,6 +22,7 @@ public final class Updater {
     public Updater(String repository, String token) {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Release.class, new ReleaseDeserializer())
+                .registerTypeAdapter(Asset.class, new AssetDeserializer())
                 .create();
         this.client = new OkHttpClient();
         this.releases = new LinkedList<>();
