@@ -14,14 +14,22 @@ public final class Updater {
 
     private final Gson gson;
     private final OkHttpClient client;
+    private final LinkedList<Release> releases;
     private final String repository;
+    private final String token;
 
-    public Updater(String repository) {
+    public Updater(String repository, String token) {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Release.class, new ReleaseDeserializer())
                 .create();
         this.client = new OkHttpClient();
+        this.releases = new LinkedList<>();
         this.repository = repository;
+        this.token = token;
+    }
+
+    public Updater(String repository) {
+        this(repository, null);
     }
 
     public OkHttpClient getClient() {
@@ -33,16 +41,31 @@ public final class Updater {
     }
 
     /**
-     * Retrieves the repository release, returns an empty LinkedList if it was not successful
+     * Must be used after Updater#updateReleases, otherwise it always will return an empty LinkedList
+     *
+     * @return the releases
+     */
+    public LinkedList<Release> getReleases() {
+        return releases;
+    }
+
+    /**
+     * Retrieves the repository and update the list of releases, returns an empty LinkedList if it was not successful
      *
      * @return all releases found on GitHub, the latest one will always be the 1st on the list
      */
-    public LinkedList<Release> getReleases() {
-        final LinkedList<Release> releases = new LinkedList<>();
-        final Request request = new Request.Builder()
+    public LinkedList<Release> updateReleases() {
+        releases.clear();
+
+        final Request.Builder requestBuilder = new Request.Builder()
                 .url(String.format("https://api.github.com/repos/%s/releases", repository))
-                .get()
-                .build();
+                .get();
+
+        if (token != null) {
+            requestBuilder.addHeader("Authorization", "token " + token);
+        }
+
+        final Request request = requestBuilder.build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) return releases;
