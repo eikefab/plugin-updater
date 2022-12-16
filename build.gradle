@@ -1,0 +1,20 @@
+group 'com.github.eikefab.libs'
+version '1.0.0'
+
+allprojects {
+
+    apply plugin: 'java'
+
+    group 'com.github.eikefab.libs.pluginupdater'
+    version '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+}
+
