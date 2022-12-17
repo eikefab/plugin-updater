@@ -61,9 +61,9 @@ public final class PluginUpdater extends JavaPlugin {
 
     public void updateFiles(Plugin plugin, Release release, String token) {
         final Downloader downloader = new Downloader(release, token);
-        final File updateFolder = new File(folder, String.format("%s_%s", plugin.getName(), release.getVersion()));
+        final File updateFolder = new File(folder, String.format("%s/%s", plugin.getName(), release.getVersion()));
 
-        if (!updateFolder.exists()) updateFolder.mkdir();
+        if (!updateFolder.exists()) updateFolder.mkdirs();
 
         downloader.download(updateFolder, Arrays.asList("jar", "yml"));
 
@@ -72,7 +72,7 @@ public final class PluginUpdater extends JavaPlugin {
         for (File file : files) {
             if (file.getName().endsWith(".jar")) {
                 final PluginDescriptionFile description = plugin.getDescription();
-                final String fullName = description.getName() + "-" + description.getVersion() + ".jar";
+                final String fullName = description.getName() + ".jar";
 
                 final File originalFile = new File(pluginsFolder, fullName);
 
