@@ -1,7 +1,7 @@
-package com.github.eikefab.libs.pluginupdater.api;
+package com.github.eikefab.libs.pluginupdater;
 
-import com.github.eikefab.libs.pluginupdater.api.deserializer.AssetDeserializer;
-import com.github.eikefab.libs.pluginupdater.api.deserializer.ReleaseDeserializer;
+import com.github.eikefab.libs.pluginupdater.deserializer.AssetDeserializer;
+import com.github.eikefab.libs.pluginupdater.deserializer.ReleaseDeserializer;
 import com.google.gson.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -1,8 +1,6 @@
 package com.github.eikefab.libs.pluginupdater;
 
-import com.github.eikefab.libs.pluginupdater.api.Release;
-import com.github.eikefab.libs.pluginupdater.api.Updater;
-import com.github.eikefab.libs.pluginupdater.api.downloader.Downloader;
+import com.github.eikefab.libs.pluginupdater.downloader.Downloader;
 import com.github.eikefab.libs.pluginupdater.configuration.ConfigUpdater;
 import com.google.common.io.Files;
 import org.bukkit.plugin.Plugin;

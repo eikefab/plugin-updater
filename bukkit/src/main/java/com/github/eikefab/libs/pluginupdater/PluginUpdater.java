@@ -1,7 +1,5 @@
 package com.github.eikefab.libs.pluginupdater;
 
-import com.github.eikefab.libs.pluginupdater.api.Release;
-import com.github.eikefab.libs.pluginupdater.api.Updater;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;

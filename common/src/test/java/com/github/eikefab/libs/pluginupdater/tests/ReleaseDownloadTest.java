@@ -1,8 +1,8 @@
-package com.github.eikefab.libs.pluginupdater.api.tests;
+package com.github.eikefab.libs.pluginupdater.tests;
 
-import com.github.eikefab.libs.pluginupdater.api.Release;
-import com.github.eikefab.libs.pluginupdater.api.Updater;
-import com.github.eikefab.libs.pluginupdater.api.downloader.Downloader;
+import com.github.eikefab.libs.pluginupdater.Release;
+import com.github.eikefab.libs.pluginupdater.Updater;
+import com.github.eikefab.libs.pluginupdater.downloader.Downloader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

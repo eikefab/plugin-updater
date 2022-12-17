@@ -1,4 +1,4 @@
-package com.github.eikefab.libs.pluginupdater.api;
+package com.github.eikefab.libs.pluginupdater;
 
 import java.util.LinkedList;
 

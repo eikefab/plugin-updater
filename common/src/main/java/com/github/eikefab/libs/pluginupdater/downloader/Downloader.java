@@ -1,7 +1,7 @@
-package com.github.eikefab.libs.pluginupdater.api.downloader;
+package com.github.eikefab.libs.pluginupdater.downloader;
 
-import com.github.eikefab.libs.pluginupdater.api.Asset;
-import com.github.eikefab.libs.pluginupdater.api.Release;
+import com.github.eikefab.libs.pluginupdater.Asset;
+import com.github.eikefab.libs.pluginupdater.Release;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
