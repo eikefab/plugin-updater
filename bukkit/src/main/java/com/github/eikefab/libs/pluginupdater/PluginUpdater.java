@@ -41,14 +41,12 @@ public final class PluginUpdater extends JavaPlugin {
         if (release.isPreRelease()) return;
 
         String[] messages = new String[] {
-                "#".repeat(30),
                 "There's a new update!",
                 "Your version: " + getDescription().getVersion(),
                 "Available version: " + release.getVersion(),
                 "Update:",
                 " - " + release.getBody(),
                 "Available at: " + release.getUrl(),
-                "#".repeat(30)
         };
 
         if (getConfig().getBoolean("alert-update")) {
