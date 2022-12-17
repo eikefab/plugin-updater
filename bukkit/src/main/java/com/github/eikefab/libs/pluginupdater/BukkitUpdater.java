@@ -42,8 +42,7 @@ public class BukkitUpdater extends Updater {
         final File target = new File(folder, release.getVersion());
 
         target.mkdirs();
-
-        downloader.download(folder, Arrays.asList("jar", "yml"));
+        downloader.download(target, Arrays.asList("jar", "yml"));
 
         return this;
     }

@@ -48,7 +48,7 @@ public class ConfigUpdater {
         }
 
         try {
-            config.save(config.saveToString());
+            config.save(original);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
