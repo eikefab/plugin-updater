@@ -3,7 +3,6 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
     maven {
         name = 'spigotmc-repo'
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -22,9 +21,11 @@ dependencies {
 build {
     dependsOn {
         shadowJar {
-            archiveName("PluginUpdater-${project.version}.jar")
+            archiveName("PluginUpdater.jar")
 
             relocate 'com.google.gson', 'com.github.eikefab.libs.pluginupdater.api.libs.gson'
+            relocate 'okio', 'com.github.eikefab.libs.pluginupdater.api.libs.okio'
+            relocate 'okhttp3', 'com.github.eikefab.libs.pluginupdater.api.libs.okhttp'
         }
     }
 }

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class Updater {
+public class Updater {
 
     private final Gson gson;
     private final OkHttpClient client;
@@ -42,8 +42,12 @@ public final class Updater {
         return repository;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     /**
-     * Must be used after Updater#updateReleases, otherwise it always will return an empty LinkedList
+     * Must be used after query, otherwise it always will return an empty LinkedList
      *
      * @return the releases
      */
@@ -56,7 +60,7 @@ public final class Updater {
      *
      * @return all releases found on GitHub, the latest one will always be the 1st on the list
      */
-    public LinkedList<Release> updateReleases() {
+    public LinkedList<Release> query() {
         releases.clear();
 
         final Request.Builder requestBuilder = new Request.Builder()

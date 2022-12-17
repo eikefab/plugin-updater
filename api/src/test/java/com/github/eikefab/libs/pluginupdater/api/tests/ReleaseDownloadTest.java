@@ -14,7 +14,7 @@ public class ReleaseDownloadTest {
     @Test
     public void downloadLatestRelease() {
         final Updater updater = new Updater("eikefab/folder-reader");
-        updater.updateReleases();
+        updater.query();
 
         Assertions.assertTrue(updater.isUpdateAvailable(10));
 

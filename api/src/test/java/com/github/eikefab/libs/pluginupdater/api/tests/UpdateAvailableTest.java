@@ -11,7 +11,7 @@ public class UpdateAvailableTest {
     public void testIfReleasesAreBeingRequestedCorrectly() {
         final Updater updater = new Updater("eikefab/folder-reader");
 
-        updater.updateReleases();
+        updater.query();
 
         Assertions.assertTrue(updater.isUpdateAvailable(10));
     }

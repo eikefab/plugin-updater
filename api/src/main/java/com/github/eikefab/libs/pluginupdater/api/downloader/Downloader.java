@@ -69,7 +69,7 @@ public final class Downloader {
         targetAssets.forEach(asset -> downloadAsset(asset, folder));
     }
 
-    public void downloadAsset(Asset asset, File folder) {
+    private void downloadAsset(Asset asset, File folder) {
         final File file = new File(folder, asset.getName());
         final Request.Builder requestBuilder = new Request.Builder()
                 .url(asset.getDownloadUrl())
