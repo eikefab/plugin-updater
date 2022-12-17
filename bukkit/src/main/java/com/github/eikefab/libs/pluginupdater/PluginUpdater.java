@@ -17,7 +17,7 @@ public final class PluginUpdater extends JavaPlugin {
     @Override
     public void onEnable() {
         getUpdater().query();
-        getDataFolder().mkdir();
+        saveDefaultConfig();
         checkUpdates();
     }
 
@@ -51,8 +51,10 @@ public final class PluginUpdater extends JavaPlugin {
                 "#".repeat(30)
         };
 
-        for (String message : messages) {
-            logger.info(message);
+        if (getConfig().getBoolean("alert-update")) {
+            for (String message : messages) {
+                logger.info(message);
+            }
         }
     }
 

@@ -1,12 +1,9 @@
-group 'com.github.eikefab.libs'
-version '1.0.0'
-
 allprojects {
 
     apply plugin: 'java'
 
     group 'com.github.eikefab.libs.pluginupdater'
-    version '1.0.0'
+    version '1.0.1'
 
     repositories {
         mavenCentral()
