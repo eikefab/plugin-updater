@@ -1,4 +1,4 @@
-package com.github.eikefab.libs.pluginupdater.deserializer;
+package com.github.eikefab.libs.pluginupdater.json;
 
 import com.github.eikefab.libs.pluginupdater.Asset;
 import com.google.gson.*;

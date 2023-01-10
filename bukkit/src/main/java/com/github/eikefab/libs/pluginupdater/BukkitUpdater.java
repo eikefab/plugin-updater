@@ -1,24 +1,22 @@
 package com.github.eikefab.libs.pluginupdater;
 
-import com.github.eikefab.libs.pluginupdater.downloader.Downloader;
-import com.github.eikefab.libs.pluginupdater.configuration.ConfigUpdater;
 import com.google.common.io.Files;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class BukkitUpdater extends Updater {
 
     private final Plugin plugin;
-    private final File folder;
+    private final File updatesFolder;
 
     public BukkitUpdater(Plugin plugin, String repository, String token) {
         super(repository, token);
 
         this.plugin = plugin;
-        this.folder = new File(plugin.getDataFolder(), "Updates");
+        this.updatesFolder = new File(plugin.getDataFolder(), "Updates");
     }
 
     public BukkitUpdater(Plugin plugin, String repository) {
@@ -29,47 +27,67 @@ public class BukkitUpdater extends Updater {
         return plugin;
     }
 
-    public boolean isUpdateAvailable() {
-        return isUpdateAvailable(getPlugin().getDescription().getVersion());
-    }
+    public void checkUpdate(boolean alert, Function<Release, String[]> message) {
+        query();
+        if (!canUpdate()) return;
 
-    public BukkitUpdater download() {
-        final Release release = getReleases().get(0);
+        if (alert) {
+            final String[] lines = message.apply(getLatestRelease());
 
-        final Downloader downloader = new Downloader(release, getToken());
-        final File target = new File(folder, release.getVersion());
-
-        target.mkdirs();
-        downloader.download(target, Arrays.asList("jar", "yml"));
-
-        return this;
-    }
-
-    public void update() {
-        final Release release = getReleases().get(0);
-        final File target = new File(folder, release.getVersion());
-
-        final File[] files = Objects.requireNonNull(target.listFiles());
-        final ConfigUpdater configUpdater = new ConfigUpdater(plugin);
-
-        for (File file : files) {
-            if (file.getName().endsWith(".jar")) updateJar(file);
-            else configUpdater.update(file);
+            for (String line : lines) plugin.getLogger().info(line);
         }
     }
 
-    private void updateJar(File jarFile) {
-        final File runningJarFile = new File(
-                plugin.getDataFolder().getParent(),
-                plugin.getDescription().getName() + ".jar"
-        );
+    public boolean canUpdate() {
+        return canUpdate(translateVersion(plugin.getDescription().getVersion()));
+    }
 
-        if (!runningJarFile.exists()) throw new IllegalArgumentException("Original jar file not found.");
+    public void update() {
+        if (!canUpdate()) return;
 
-        try {
-            Files.copy(jarFile, runningJarFile);
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        final Release latest = getLatestRelease();
+        final File folder = new File(updatesFolder, latest.getVersion());
+        final ConfigUpdater config = new ConfigUpdater(plugin);
+
+        purgeOldVersions();
+        if (folder.exists()) return;
+
+        final String pluginFileName = plugin.getDescription().getName();
+        final File pluginJarFile = new File(plugin.getDataFolder().getParent(), pluginFileName);
+
+        if (!pluginJarFile.exists()) throw new IllegalArgumentException("Plugin file name incompatible with the lib.");
+
+        folder.mkdirs();
+        latest.download(folder);
+
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
+            final String fileName = file.getName();
+
+            if (fileName.equals(pluginFileName)) {
+                try {
+                    Files.copy(file, pluginJarFile);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+
+                    break;
+                }
+            } else if (fileName.endsWith(".yml")) {
+                config.update(file);
+            }
+        }
+    }
+
+    private void purgeOldVersions() {
+        if (!updatesFolder.exists()) return;
+
+        final Release latest = getLatestRelease();
+        final File[] files = Objects.requireNonNull(updatesFolder.listFiles());
+
+        for (File file : files) {
+            if (!file.isDirectory()) return;
+            if (file.getName().equalsIgnoreCase(latest.getVersion())) return;
+
+            file.delete();
         }
     }
 

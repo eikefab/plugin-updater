@@ -1,17 +1,21 @@
 package com.github.eikefab.libs.pluginupdater;
 
-import com.github.eikefab.libs.pluginupdater.deserializer.AssetDeserializer;
-import com.github.eikefab.libs.pluginupdater.deserializer.ReleaseDeserializer;
+import com.github.eikefab.libs.pluginupdater.json.AssetDeserializer;
+import com.github.eikefab.libs.pluginupdater.json.ReleaseDeserializer;
 import com.google.gson.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Updater {
+
+    private static final String REPOSITORY_URL = "https://api.github.com/repos/%s/releases";
 
     private final Gson gson;
     private final OkHttpClient client;
@@ -46,25 +50,19 @@ public class Updater {
         return token;
     }
 
-    /**
-     * Must be used after query, otherwise it always will return an empty LinkedList
-     *
-     * @return the releases
-     */
     public LinkedList<Release> getReleases() {
         return releases;
     }
 
-    /**
-     * Retrieves the repository and update the list of releases
-     *
-     * @return all releases found on GitHub, the latest one will always be the 1st on the list
-     */
-    public LinkedList<Release> query() {
-        releases.clear();
+    public Release getLatestRelease() {
+        if (releases.isEmpty()) return null;
 
+        return releases.getFirst();
+    }
+
+    public void query() {
         final Request.Builder requestBuilder = new Request.Builder()
-                .url(String.format("https://api.github.com/repos/%s/releases", repository))
+                .url(String.format(REPOSITORY_URL, repository))
                 .get();
 
         if (token != null) {
@@ -72,11 +70,13 @@ public class Updater {
         }
 
         final Request request = requestBuilder.build();
-
         try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) return releases;
+            if (!response.isSuccessful()) return;
 
-            final List<JsonElement> list = gson.fromJson(response.body().string(), JsonArray.class).asList();
+            final ResponseBody body = response.body();
+            if (body == null) return;
+
+            final List<JsonElement> list = gson.fromJson(body.string(), JsonArray.class).asList();
 
             releases.addAll(
                     list.stream()
@@ -86,40 +86,39 @@ public class Updater {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
-        return releases;
     }
 
-    /**
-     * Compares the provided version to the latest release version
-     *
-     * @param currentVersion the version to compare
-     * @return true if the latest release is newer than the current one
-     */
-    public boolean isUpdateAvailable(int currentVersion) {
-        final List<Release> releases = getReleases();
-
-        if (releases.isEmpty()) return false;
-
-        final Release release = releases.get(0);
-
+    public int translateVersion(String version) {
         try {
-            final int version = Integer.parseInt(release.getVersion().replace(".", ""));
-
-            return version > currentVersion;
+            return Integer.parseInt(version.replace(".", ""));
         } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException("Release 'tag_name' isn't supported!");
+            return -1;
         }
     }
 
-    public boolean isUpdateAvailable(String currentVersion) {
-        try {
-            final int version = Integer.parseInt(currentVersion.replace(".", ""));
+    public boolean canUpdate(int version) {
+        final Release latest = getLatestRelease();
 
-            return isUpdateAvailable(version);
-        } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException("Current 'tag_name' isn't supported!");
-        }
+        if (latest == null) return false;
+        if (latest.isPreRelease()) return false;
+
+        final int latestVersion = translateVersion(latest.getVersion());
+
+        if (latestVersion == -1) throw new IllegalArgumentException("Couldn't check release version.");
+
+        return latestVersion > version;
+    }
+
+    public void download(File folder) {
+        final Release latest = getLatestRelease();
+
+        if (latest == null) return;
+
+        latest.download(token, folder);
+    }
+
+    public boolean canUpdate(String version) {
+        return canUpdate(translateVersion(version));
     }
 
 }

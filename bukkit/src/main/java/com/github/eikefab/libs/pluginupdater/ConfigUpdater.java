@@ -1,4 +1,4 @@
-package com.github.eikefab.libs.pluginupdater.configuration;
+package com.github.eikefab.libs.pluginupdater;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -6,11 +6,11 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
-public class ConfigUpdater {
+class ConfigUpdater {
 
     private final Plugin plugin;
 
-    public ConfigUpdater(Plugin plugin) {
+    ConfigUpdater(Plugin plugin) {
         this.plugin = plugin;
     }
 

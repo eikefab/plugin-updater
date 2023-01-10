@@ -1,5 +1,6 @@
 package com.github.eikefab.libs.pluginupdater;
 
+import java.io.File;
 import java.util.LinkedList;
 
 public class Release {
@@ -42,6 +43,16 @@ public class Release {
 
     public LinkedList<Asset> getAssets() {
         return assets;
+    }
+
+    public void download(String token, File folder) {
+        for (Asset asset : assets) {
+            asset.download(token, folder);
+        }
+    }
+
+    public void download(File folder) {
+        download(null, folder);
     }
 
 }
