@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "com.github.eikefab.plugin-updater:bukkit:1.0.0"
+    compileOnly "com.github.eikefab.plugin-updater:bukkit:master-SNAPSHOT"
 }
 ```
 
