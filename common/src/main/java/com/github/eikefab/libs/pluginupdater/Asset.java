@@ -9,6 +9,9 @@ import okio.Okio;
 
 import java.io.File;
 
+/**
+ * Representation of a release's asset on GitHub
+ */
 public class Asset {
 
     private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();

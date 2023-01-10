@@ -3,6 +3,9 @@ package com.github.eikefab.libs.pluginupdater;
 import java.io.File;
 import java.util.LinkedList;
 
+/**
+ * Representation of a release on GitHub
+ */
 public class Release {
 
     private final int id;

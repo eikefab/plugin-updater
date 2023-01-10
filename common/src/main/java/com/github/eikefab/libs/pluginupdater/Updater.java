@@ -54,12 +54,18 @@ public class Updater {
         return releases;
     }
 
+    /**
+     * @return the latest release or null if releases list is empty
+     */
     public Release getLatestRelease() {
         if (releases.isEmpty()) return null;
 
         return releases.getFirst();
     }
 
+    /**
+     * Retrieve info from GitHub
+     */
     public void query() {
         final Request.Builder requestBuilder = new Request.Builder()
                 .url(String.format(REPOSITORY_URL, repository))
@@ -88,6 +94,12 @@ public class Updater {
         }
     }
 
+    /**
+     * Translate a semantic version to integer
+     *
+     * @param version the version itself
+     * @return the semantic version as a number, example: 1.0.0 as 100
+     */
     public int translateVersion(String version) {
         try {
             return Integer.parseInt(version.replace(".", ""));
@@ -96,6 +108,13 @@ public class Updater {
         }
     }
 
+    /**
+     * Check if the latest version is higher than current version
+     *
+     * @param version the version to compare
+     * @return false if they are equal or if the latest release is a pre-release one, true if and only the latest
+     * release version is higher than current one
+     */
     public boolean canUpdate(int version) {
         final Release latest = getLatestRelease();
 
@@ -117,6 +136,12 @@ public class Updater {
         latest.download(token, folder);
     }
 
+    /**
+     * Translates the version and then calls canUpdate(integer)
+     * @param version the semantic version
+     * @return false if they are equal or if the latest release is a pre-release one, true if and only the latest
+     * release version is higher than current one
+     */
     public boolean canUpdate(String version) {
         return canUpdate(translateVersion(version));
     }
