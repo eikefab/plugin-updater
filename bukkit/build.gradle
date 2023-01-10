@@ -15,8 +15,8 @@ repositories {
 }
 
 dependencies {
-    api project(':api')
-    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    api project(':common')
+    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 }
 
 build {

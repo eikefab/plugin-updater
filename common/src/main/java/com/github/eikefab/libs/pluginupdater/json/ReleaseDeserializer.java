@@ -1,7 +1,7 @@
-package com.github.eikefab.libs.pluginupdater.api.deserializer;
+package com.github.eikefab.libs.pluginupdater.json;
 
-import com.github.eikefab.libs.pluginupdater.api.Asset;
-import com.github.eikefab.libs.pluginupdater.api.Release;
+import com.github.eikefab.libs.pluginupdater.Release;
+import com.github.eikefab.libs.pluginupdater.Asset;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

@@ -1,7 +1,11 @@
-package com.github.eikefab.libs.pluginupdater.api;
+package com.github.eikefab.libs.pluginupdater;
 
+import java.io.File;
 import java.util.LinkedList;
 
+/**
+ * Representation of a release on GitHub
+ */
 public class Release {
 
     private final int id;
@@ -42,6 +46,16 @@ public class Release {
 
     public LinkedList<Asset> getAssets() {
         return assets;
+    }
+
+    public void download(String token, File folder) {
+        for (Asset asset : assets) {
+            asset.download(token, folder);
+        }
+    }
+
+    public void download(File folder) {
+        download(null, folder);
     }
 
 }
