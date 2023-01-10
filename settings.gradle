@@ -1,5 +1,4 @@
 rootProject.name = 'plugin-updater'
 include 'common'
 include 'bukkit'
-include 'bungee'
 

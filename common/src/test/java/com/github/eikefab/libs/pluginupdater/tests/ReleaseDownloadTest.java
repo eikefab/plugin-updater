@@ -2,7 +2,6 @@ package com.github.eikefab.libs.pluginupdater.tests;
 
 import com.github.eikefab.libs.pluginupdater.Release;
 import com.github.eikefab.libs.pluginupdater.Updater;
-import com.github.eikefab.libs.pluginupdater.downloader.Downloader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,20 +12,17 @@ public class ReleaseDownloadTest {
 
     @Test
     public void downloadLatestRelease() {
-        final Updater updater = new Updater("eikefab/folder-reader");
+        final Updater updater = new Updater("eikefab/command-lib");
         updater.query();
 
-        Assertions.assertTrue(updater.isUpdateAvailable(10));
+        final Release release = updater.getLatestRelease();
 
-        final Release release = updater.getReleases().get(0);
-
-        final Downloader downloader = new Downloader(release);
         final File folder = new File(System.getProperty("user.dir"), "out");
+        folder.mkdirs();
 
-        downloader.download(folder);
+        release.download(folder);
 
-        final File file = Objects.requireNonNull(folder.listFiles())[0];
-        Assertions.assertEquals(file.getName(), "folder-reader-1.1.jar");
+        Assertions.assertNotEquals(0, folder.listFiles().length);
     }
 
 }

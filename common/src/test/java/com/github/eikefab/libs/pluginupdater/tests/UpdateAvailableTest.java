@@ -9,11 +9,11 @@ public class UpdateAvailableTest {
 
     @Test
     public void testIfReleasesAreBeingRequestedCorrectly() {
-        final Updater updater = new Updater("eikefab/folder-reader");
+        final Updater updater = new Updater("eikefab/command-lib");
 
         updater.query();
 
-        Assertions.assertTrue(updater.isUpdateAvailable(10));
+        Assertions.assertTrue(updater.canUpdate(99));
     }
 
 }
